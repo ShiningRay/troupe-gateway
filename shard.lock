@@ -1,0 +1,18 @@
+version: 2.0
+shards:
+  db:
+    git: https://github.com/crystal-lang/crystal-db.git
+    version: 0.15.0
+
+  pg:
+    git: https://github.com/will/crystal-pg.git
+    version: 0.31.0
+
+  sqlite3:
+    git: https://github.com/crystal-lang/crystal-sqlite3.git
+    version: 0.24.0
+
+  troupe:
+    git: https://github.com/shiningray/troupe.cr.git
+    version: 0.22.0-dev.0+git.commit.fd51c5a095f99a32c3f85fc6458be5900caf3fb7
+

@@ -1,0 +1,9 @@
+name: troupe-gateway
+version: 0.1.0
+crystal: ">= 1.22"
+description: Troupe 外部端点传输桥 —— WebSocket 会话/有界 mailbox/Outbox 派发循环/事件去重（ADR-0007 L3）
+license: MIT
+dependencies:
+  troupe:
+    github: ShiningRay/troupe.cr
+    branch: main
