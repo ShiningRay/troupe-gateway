@@ -73,6 +73,11 @@ module Troupe
         @mutex.synchronize { @sessions.size }
       end
 
+      # 按会话 id 查询会话（用于应用路由时读取 meta/握手信息）。
+      def session(session_id : String) : Session?
+        @mutex.synchronize { @sessions[session_id]? }
+      end
+
       # ---- 启停 ----
 
       # 绑定并后台监听；返回实际端口（0 → 系统分配）。

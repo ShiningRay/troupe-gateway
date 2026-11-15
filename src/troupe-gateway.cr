@@ -18,6 +18,6 @@ require "./gateway/web_socket"
 
 module Troupe
   module Gateway
-    VERSION = "0.1.0"
+    VERSION = "0.1.1"
   end
 end
