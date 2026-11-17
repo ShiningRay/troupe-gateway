@@ -1,5 +1,6 @@
 require "spec"
 require "http"
+require "file_utils"
 require "../src/troupe-gateway"
 
 # Crystal 1.22 的 Channel 没有非阻塞 try_send/try_receive：select + timeout 实现。

@@ -105,6 +105,31 @@ module Troupe
         b.close
       end
 
+      it "static_dir：非 WS 请求回静态文件，缺失回 404 JSON" do
+        dir = File.tempname("gw-static")
+        Dir.mkdir(dir)
+        File.write(File.join(dir, "index.html"), "<h1>ok</h1>")
+        begin
+          config = Troupe::Gateway::Config.new(static_dir: dir)
+          gateway, stage, port = new_gateway(config)
+
+          res = HTTP::Client.get("http://127.0.0.1:#{port}/")
+          res.status_code.should eq(200)
+          res.body.should eq("<h1>ok</h1>")
+          res.headers["Content-Type"].should contain("text/html")
+
+          res2 = HTTP::Client.get("http://127.0.0.1:#{port}/missing.js")
+          res2.status_code.should eq(404)
+          res2.headers["Content-Type"].should contain("application/json")
+
+          res3 = HTTP::Client.get("http://127.0.0.1:#{port}/../secret.txt")
+          res3.status_code.should eq(404)
+          gateway.stop
+        ensure
+          FileUtils.rm_rf(dir) if File.exists?(dir)
+        end
+      end
+
       it "溢出策略 Drop：mailbox 满时丢弃消息、会话保留" do
         config = Troupe::Gateway::Config.new(mailbox_cap: 2, push_wait: 50.milliseconds,
           overflow: Troupe::Gateway::Overflow::Drop)

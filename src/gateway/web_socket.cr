@@ -86,7 +86,7 @@ module Troupe
         ws_handler = HTTP::WebSocketHandler.new do |ws, context|
           run_session(ws, context)
         end
-        server = HTTP::Server.new([ws_handler, FallbackHandler.new(@config.service_name)])
+        server = HTTP::Server.new([ws_handler, FallbackHandler.new(@config.service_name, @config.static_dir)])
         address = server.bind_tcp(host, port)
         @http = server
         spawn(name: "gateway-http-listen") { server.listen }
@@ -210,14 +210,37 @@ module Troupe
       end
     end
 
-    # 非 WebSocket 请求的兜底应答。
+    # 非 WebSocket 请求的兜底应答：配置 static_dir 时尝试回静态文件，否则 404 JSON。
     class FallbackHandler
       include HTTP::Handler
 
-      def initialize(@service_name : String)
+      MIME = {
+        ".html" => "text/html; charset=utf-8",
+        ".js"   => "text/javascript; charset=utf-8",
+        ".css"  => "text/css; charset=utf-8",
+        ".svg"  => "image/svg+xml",
+        ".png"  => "image/png",
+      }
+
+      def initialize(@service_name : String, @static_dir : String? = nil)
       end
 
       def call(context : HTTP::Server::Context) : Nil
+        if dir = @static_dir
+          path = context.request.path
+          file = path == "/" ? "index.html" : path.lstrip('/')
+          # 路径安全：拒绝目录穿越
+          unless file.includes?("..")
+            full = File.join(dir, file)
+            if File.file?(full)
+              context.response.status = :ok
+              context.response.headers["Content-Type"] =
+                MIME[File.extname(full)]? || "application/octet-stream"
+              context.response.print(File.read(full))
+              return
+            end
+          end
+        end
         context.response.status = :not_found
         context.response.headers["Content-Type"] = "application/json"
         context.response.print(%({"service":#{@service_name.inspect}}))

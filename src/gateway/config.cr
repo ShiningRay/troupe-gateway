@@ -19,6 +19,8 @@ module Troupe
       dedup : Bool = true,
       dedup_cache : Int32 = 4096,
       dispatch_interval : ::Time::Span = 50.milliseconds,
-      service_name : String = "troupe-gateway"
+      service_name : String = "troupe-gateway",
+      # 可选：同端口托管静态目录（如前端仓库；非 WS 请求命中文件则回文件，否则 404 JSON）
+      static_dir : String? = nil
   end
 end
