@@ -1,6 +1,6 @@
 # troupe-gateway
 
-Troupe 的**外部端点传输桥**：把"外部客户端 ↔ actor"的通用传输管理收编成开箱即用的伴生 shard，协议路由留给应用。分层边界与决策记录见 [troupe-planning ADR-0007](https://github.com/ShiningRay/troupe-planning/blob/main/docs/adr/0007-external-endpoint-layering.md)。
+Troupe 的**外部端点传输桥**：把"外部客户端 ↔ actor"的通用传输管理收编成开箱即用的伴生 shard，协议路由留给应用。分层边界与决策记录见 [troupe-planning ADR-0007](https://github.com/ShiningRay/troupe/blob/main/docs/adr/0007-external-endpoint-layering.md)。
 
 ## 职责边界（ADR-0007 L3）
 
