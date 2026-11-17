@@ -167,8 +167,10 @@ module Troupe
       private def run_session(ws : HTTP::WebSocket, context : HTTP::Server::Context) : Nil
         conn = Random::Secure.hex(8)
         request = context.request
+        query = Hash(String, String).new
+        request.query_params.each { |k, v| query[k] = v }
         session = Session.new(conn, @config.mailbox_cap,
-          request.path.dup, request.headers.dup)
+          request.path.dup, query, request.headers.dup)
         session.socket = ws
 
         return unless accept?(session)

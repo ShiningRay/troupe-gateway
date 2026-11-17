@@ -9,6 +9,7 @@ module Troupe
       getter id : String
       getter meta : Hash(String, String)
       getter path : String
+      getter query : Hash(String, String)
       getter headers : HTTP::Headers
       getter mailbox : Channel(String)
       property socket : HTTP::WebSocket?
@@ -17,7 +18,8 @@ module Troupe
       @cleaned : Bool = false
 
       def initialize(@id : String, mailbox_cap : Int32 = 256,
-                     @path : String = "", @headers : HTTP::Headers = HTTP::Headers.new)
+                     @path : String = "", @query : Hash(String, String) = Hash(String, String).new,
+                     @headers : HTTP::Headers = HTTP::Headers.new)
         @meta = Hash(String, String).new
         @mailbox = Channel(String).new(mailbox_cap)
       end
