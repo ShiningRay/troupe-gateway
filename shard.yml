@@ -5,5 +5,5 @@ description: Troupe 外部端点传输桥 —— WebSocket 会话/有界 mailbox
 license: MIT
 dependencies:
   troupe:
-    github: ShiningRay/troupe.cr
+    github: ShiningRay/troupe-cr
     branch: main
